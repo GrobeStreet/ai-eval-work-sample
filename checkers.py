@@ -20,6 +20,7 @@ def check_M1(submitted):                        # sums of two squares, consecuti
 def check_M2(submitted):                        # submitted: expression string
     mp.mp.dps = 40
     target = -mp.mpf(5) / 8 * mp.zeta(3)
+    # symbolic path
     try:
         expr = sp.sympify(submitted, locals={"zeta": sp.zeta, "pi": sp.pi})
         if sp.simplify(expr - (-sp.Rational(5, 8) * sp.zeta(3))) == 0:
@@ -62,15 +63,17 @@ def check_Q2(submitted):
         return False
 
 # ---------- C1: unit tests against a brute oracle (FAIL_TO_PASS + PASS_TO_PASS) ----------
-def check_C1(fn):
+def check_C1(fn):                               # fn: candidate callable(nums,k)->int
     def oracle(nums, k):
         pd = sorted(abs(x - y) for i, x in enumerate(nums) for y in nums[i + 1:])
         return pd[k - 1]
+    # fixed edge cases
     fixed = [([1, 1], 1, 0), ([1, 3, 1], 1, 0), ([1, 3, 1], 3, 2),
              ([-5, 5], 1, 10), ([0, 0, 0], 3, 0), ([10, 1, 4, 7], 6, 9)]
     for nums, k, want in fixed:
         if fn(list(nums), k) != want:
             return False
+    # randomized differential test
     rng = np.random.default_rng(123)
     for _ in range(200):
         n = int(rng.integers(2, 30))
@@ -106,12 +109,13 @@ _A1_OPT = _a1_optimum()
 def check_A1(path, require_canonical=True):
     if _a1_run(path) != 2026:
         return False
-    if len(path) != len(_A1_OPT):
+    if len(path) != len(_A1_OPT):                # must be optimal length
         return False
     return (path == _A1_OPT) if require_canonical else True
 
 
 if __name__ == "__main__":
+    # accept the canonical answers
     def c1_ref(nums, k):
         a = sorted(nums); n = len(a)
         def cnt(d):
@@ -139,6 +143,7 @@ if __name__ == "__main__":
         "C2": check_C2(([1], [1, 2], [2, 2, 2], (True, True, False), ['a', 'c', 'b'])),
         "A1": check_A1("IDIDIDIDIDIDDIDDID"),
     }
+    # reject deliberately wrong answers
     rejects = {
         "M1_wrong": check_M1(40800),
         "M2_wrong": check_M2("-zeta(3)"),
