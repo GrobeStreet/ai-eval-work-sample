@@ -140,14 +140,3 @@ Grounded in current practice at FrontierMath (Epoch AI), GPQA, SWE-bench Verifie
 
 Reproducibility discipline is deliberate: it mirrors how I approach research verification (independent bit-for-bit re-execution) and is exactly the property eval buyers are paying to get.
 
----
-
-## Where a set like this goes (routes, honestly labeled)
-
-- **METR task/eval bounty** — the one *currently-published* rate: **$300 per task-hour** (+ up to 50% bonus), output-paid, form/PR-based, built to the METR Task Standard (environment + deterministic scorer). No video gate. Items A1, C1, Q1 are closest to their "capability, not memorization" task format. metr.org/careers.
-- **Epoch AI — FrontierMath "Open Problems"** submission form (actively commissioning contributions). M1, M2, M3, Q2 fit the exact-answer + verification-script format; author pay is **not publicly posted**, so I don't quote a number. epoch.ai/frontiermath.
-- **Humanity's Last Exam — rolling intake** (agibenchmark@safe.ai). The original round's $5k/$500 + co-authorship was a closed cycle; the rolling fork still accepts hard, verifiable items.
-- **Portfolio / grant artifact.** The strongest immediate use: attach this to the Epoch AI Benchmark-Reviews and Mercor/METR applications and to an Emergent Ventures / Manifund note as proof of the "formulate new frontier data, verifiably" skill.
-- **Marketplaces (Mercor, Surge, Handshake)** run eval-authoring queues (~$25–250+/hr) but gate on an AI **video** interview — flagged as blocked under your stated constraint unless you clear it.
-
-*Honest caveat carried from the research pass: only METR's $300/task-hour is a currently-published rate; FrontierMath author pay is undisclosed and HLE's $5k/$500 was the closed round — don't quote those as live.*
