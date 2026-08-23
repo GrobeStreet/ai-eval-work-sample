@@ -17,7 +17,7 @@ on:
 
 permissions:
   contents: write
-  models: read
+  copilot-requests: write
 
 jobs:
   blind-evaluation:
@@ -35,10 +35,13 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Run independent evaluator through GitHub Models
+      - name: Install GitHub Copilot CLI
+        run: npm install -g @github/copilot
+
+      - name: Run independent evaluator through Copilot CLI
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python cleanroom/run_meridian_blind.py
+        run: python cleanroom/run_meridian_blind_copilot.py
 
       - name: Freeze first-pass memo on isolated branch
         run: |
