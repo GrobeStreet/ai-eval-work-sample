@@ -1,0 +1,10 @@
+{
+  "run_id": "MERIDIAN-BLIND-001",
+  "execution_context": "GitHub Actions + GitHub Copilot CLI",
+  "model_selection": "auto",
+  "timestamp_utc": "2026-08-23T23:48:29.802712+00:00",
+  "input_contains_hidden_answer_key": false,
+  "input_contains_expected_scorecard": false,
+  "input_contains_prescribed_verdict": false,
+  "errors": []
+}

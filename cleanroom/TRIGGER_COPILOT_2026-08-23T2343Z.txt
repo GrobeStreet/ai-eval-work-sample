@@ -1,0 +1,1 @@
+Trigger MERIDIAN-BLIND-001 using the GitHub Copilot CLI clean-room path. This file contains no evaluator evidence or expected answers.
