@@ -1,0 +1,1 @@
+Trigger MERIDIAN-BLIND-001 GitHub Actions clean-room evaluation. No evaluator evidence or expected answer is contained in this file.
