@@ -7,6 +7,12 @@ on:
     paths:
       - '.github/workflows/meridian-blind-launcher.yml'
       - 'cleanroom-launch/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'cleanroom/**'
+      - '.github/workflows/meridian-blind.yml'
 
 permissions:
   contents: write
