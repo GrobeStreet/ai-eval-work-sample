@@ -27,7 +27,7 @@ jobs:
       - name: Checkout isolated Meridian branch
         uses: actions/checkout@v4
         with:
-          ref: meridian-blind-001
+          ref: meridian-blind-002
           fetch-depth: 0
 
       - name: Set up Python
@@ -47,10 +47,10 @@ jobs:
         run: |
           git config user.name 'ai-q-cleanroom-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add results/MERIDIAN-BLIND-001.md results/MERIDIAN-BLIND-001.metadata.json
+          git add results/MERIDIAN-BLIND-002.md results/MERIDIAN-BLIND-002.metadata.json
           if git diff --cached --quiet; then
             echo 'No new result to commit.'
             exit 0
           fi
-          git commit -m 'Freeze MERIDIAN-BLIND-001 first-pass memo [skip ci]'
-          git push origin HEAD:meridian-blind-001
+          git commit -m 'Freeze MERIDIAN-BLIND-002 first-pass memo [skip ci]'
+          git push origin HEAD:meridian-blind-002
