@@ -5,7 +5,7 @@ import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 
-RUN_ID = "MERIDIAN-BLIND-001"
+RUN_ID = "MERIDIAN-BLIND-002"
 
 # IMPORTANT: This clean-room runner contains evaluator-facing evidence only.
 # It intentionally contains no hidden answer key, expected classifications,
@@ -23,7 +23,17 @@ Permitted evidence states: SUPPORTED, PARTIALLY SUPPORTED, NOT SUPPORTED, INSUFF
 
 Operating rule: AI proposes. Deterministic systems verify. Evidence remains traceable.
 
-Do not turn absence of evidence into a negative fact. Distinguish an observed association from causal attribution. Do not accuse management of deception unless evidence requires it. Do not invent acquisition price, EBITDA impact, or a valuation adjustment not supported by the supplied materials.
+Evidence-discipline rules:
+- Do not turn absence of evidence into a negative fact.
+- Distinguish observed association from causal attribution.
+- Do not accuse management of deception, fraud, or intentional misstatement unless the supplied evidence directly establishes it.
+- When a management metric is arithmetically real but narrow, call it a narrow/non-decision-ready definition and normalize it; do not speculate about intent.
+- Do not infer competitor replication timelines, patent strength, churn, customer concentration, market size, growth rates, or business-model facts that are not supplied.
+- Do not claim that ROI is eliminated, economics are uncompetitive, or a moat is absent unless the supplied evidence directly establishes those conclusions.
+- Do not infer the hidden causal treatment effect behind the customer labor result. Preserve INSUFFICIENT EVIDENCE where causal attribution is not identified.
+- Do not output an acquisition price, purchase-price range, company valuation, valuation range, EBITDA impact, valuation multiple, implied platform value, distressed valuation, or any numeric transaction-value scenario. This prohibition includes hypothetical examples.
+- The only dollar figures permitted in the memo are the supplied and reconstructed unit-cost measurements ($0.09-class inference/unit costs and their normalized production-cost counterparts). No other dollar valuation or transaction figures may appear.
+- Transaction implications must be qualitative underwriting implications and concrete diligence requests only.
 """
 
 MANAGEMENT_CLAIMS = [
@@ -169,12 +179,19 @@ Produce the untouched FIRST-PASS Investment Committee memo. It must include:
 2. A claim matrix for C1-C6. For each claim separately assess any applicable REAL / PROPRIETARY / DURABLE / ECONOMIC dimension using only: SUPPORTED, PARTIALLY SUPPORTED, NOT SUPPORTED, INSUFFICIENT EVIDENCE, NOT TESTED.
 3. Reproduced or reconstructed quantitative findings with explicit arithmetic where useful.
 4. Comparator analysis for the claimed proprietary architecture lift. Separate the weak management comparison, normalized generic comparison, architecture-only contribution, and data contribution rather than collapsing them.
-5. Transfer/durability analysis using the fresh-customer and vertical evidence.
-6. Unit-economics normalization separating the narrow management cost statistic from production-relevant model/infra cost and variable human review/fallback cost.
-7. Causal-evidence analysis for the observed customer labor reduction. Do not infer an unobserved treatment effect.
-8. At least one genuine positive technical/operational strength if the evidence supports one.
+5. Transfer/durability analysis using the fresh-customer and vertical evidence. Describe heterogeneity; do not generalize the healthcare weakness to every vertical.
+6. Unit-economics normalization separating the narrow management cost statistic from production-relevant model/infra cost and variable human review/fallback cost. State what is measured; do not infer overall customer ROI or competitiveness from these unit costs alone.
+7. Causal-evidence analysis for the observed customer labor reduction. Treat the before/after observation separately from causal attribution. Do not infer an unobserved treatment effect.
+8. At least one genuine positive technical/operational strength if the evidence supports one, including safety/quality gating if justified by the evidence.
 9. An evidence ledger citing the specific supplied source/measurement used for every load-bearing conclusion.
-10. Transaction implications and a prioritized list of additional diligence requests. Do NOT invent an acquisition price, EBITDA impact, or valuation discount.
+10. Transaction implications and a prioritized list of additional diligence requests. Transaction implications must be qualitative only: what the IC can safely underwrite now, what it cannot safely underwrite, and what evidence would resolve the uncertainty.
+
+FINAL OUTPUT SELF-CHECK BEFORE YOU RESPOND:
+- Remove any acquisition price, purchase-price range, company valuation, valuation range, EBITDA impact, valuation multiple, implied company/platform dollar value, or distressed-value language.
+- Dollar figures are permitted ONLY for supplied/reconstructed unit costs: approximately $0.09, $0.157/$0.195, $0.427/$0.814 and close rounded equivalents.
+- Remove unsupported competitor replication timelines, unsupported market/business facts, and unsupported claims that ROI is eliminated or economics are uncompetitive.
+- Do not accuse management of deception. Use evidence-state language and metric-normalization language instead.
+- Preserve at least one INSUFFICIENT EVIDENCE conclusion where warranted.
 
 Be adversarial but fair. A represented metric can be arithmetically real while its broader interpretation is only partially supported. Preserve uncertainty explicitly.
 """
@@ -182,7 +199,6 @@ Be adversarial but fair. A represented metric can be arithmetically real while i
 
 def call_model(token: str):
     endpoint = "https://models.github.ai/inference/chat/completions"
-    # Ordered strongest-known-to-broadest fallback. The runner records the model actually used.
     candidates = [
         "openai/gpt-5",
         "openai/gpt-4.1",
