@@ -1,0 +1,1 @@
+Launch MERIDIAN-BLIND-002 from the default branch. The workflow checks out the isolated meridian-blind-002 branch. This file contains no evaluator answer key, scorecard, expected verdict, or hidden ground truth.
