@@ -1,0 +1,1 @@
+Retry MERIDIAN-BLIND-002 after adding diagnostic preservation to the launcher. This trigger file contains no hidden answer key, scorecard, expected verdict, or builder ground truth.
