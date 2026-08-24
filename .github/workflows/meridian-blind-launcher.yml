@@ -38,19 +38,40 @@ jobs:
       - name: Install GitHub Copilot CLI
         run: npm install -g @github/copilot
 
-      - name: Run independent evaluator through Copilot CLI
+      - name: Run evaluator and preserve diagnostics
+        shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python cleanroom/run_meridian_blind_copilot.py
+        run: |
+          set +e
+          python cleanroom/run_meridian_blind_copilot.py > /tmp/meridian002.log 2>&1
+          status=$?
+          mkdir -p results
+          if [ "$status" -ne 0 ]; then
+            {
+              echo '# MERIDIAN-BLIND-002 runner failure'
+              echo
+              echo "Exit status: $status"
+              echo
+              echo '```text'
+              tail -n 200 /tmp/meridian002.log
+              echo '```'
+            } > results/MERIDIAN-BLIND-002.failure.md
+          else
+            rm -f results/MERIDIAN-BLIND-002.failure.md
+          fi
+          cat /tmp/meridian002.log
+          exit 0
 
-      - name: Freeze first-pass memo on isolated branch
+      - name: Freeze memo or failure diagnostic on isolated branch
+        shell: bash
         run: |
           git config user.name 'ai-q-cleanroom-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add results/MERIDIAN-BLIND-002.md results/MERIDIAN-BLIND-002.metadata.json
+          git add results/MERIDIAN-BLIND-002.md results/MERIDIAN-BLIND-002.metadata.json results/MERIDIAN-BLIND-002.failure.md 2>/dev/null || true
           if git diff --cached --quiet; then
-            echo 'No new result to commit.'
+            echo 'No result or diagnostic to commit.'
             exit 0
           fi
-          git commit -m 'Freeze MERIDIAN-BLIND-002 first-pass memo [skip ci]'
+          git commit -m 'Freeze MERIDIAN-BLIND-002 result or diagnostic [skip ci]'
           git push origin HEAD:meridian-blind-002
