@@ -1,0 +1,39 @@
+# PROPOSED replacement for .github/workflows/meridian-blind.yml
+# The GitHub connector cannot write under .github/workflows/ without the
+# `workflow` OAuth scope, so this file is staged here. To activate: move/rename
+# it to .github/workflows/meridian-blind.yml (overwriting the Copilot version)
+# from the GitHub web UI or a local push — a 20-second step under your login.
+#
+# It makes CI free, reproducible, and deterministic: recompute the 10 eval
+# answers, run the checkers, and certify the Meridian memo obeyed AI-Q's
+# evidence-discipline protocol. No external model API, no Copilot quota.
+
+name: Meridian Blind 002 (deterministic verify)
+
+on:
+  push:
+    branches: [meridian-blind-002, meridian-blind-002-green]
+  pull_request:
+    branches: [meridian-blind-002]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install deterministic deps
+        run: pip install numpy scipy scikit-learn sympy mpmath
+      - name: Recompute all 10 eval answers from first principles
+        run: python verify_items.py
+      - name: Checkers accept canonical / reject near-miss
+        run: python checkers.py
+      - name: Certify Meridian memo obeys AI-Q evidence discipline
+        run: python cleanroom/verify_memo.py results/MERIDIAN-BLIND-002.md
