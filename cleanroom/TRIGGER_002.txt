@@ -1,0 +1,1 @@
+Trigger MERIDIAN-BLIND-002 hardened clean-room evaluation. This file contains no answer-bearing information.
