@@ -1,0 +1,2 @@
+Trigger-only file for MERIDIAN-BLIND-002 clean-room workflow.
+No evaluator answer key, expected verdict, scorecard, or hidden ground-truth information is contained here.
